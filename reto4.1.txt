@@ -1,0 +1,361 @@
+/*Import librerias*/
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.io.File;//Para verificación de longitud de base de datos
+import java.sql.DriverManager;
+
+/* carpeta view */
+public class VistaRequerimientosReto4 {
+    public static final ControladorRequerimientosReto4 controlador = new ControladorRequerimientosReto4();
+
+    public static void requerimiento1(){
+        System.out.println("*** Lideres por Salario ***");   
+
+        try{
+            ArrayList<Requerimiento1> liderSalario = controlador.requerimiento_1();
+            for(Requerimiento1 liderSal: liderSalario){
+                System.out.printf("El Lider %s %s con Id %d Tiene un salario de %d\n",
+               liderSal.getNombre(),
+               liderSal.getPrimerApellido(),
+               liderSal.getIdLider(),
+               liderSal.getSalario()
+                );
+            }
+
+        }catch(SQLException e){
+            System.err.println("Ha ocurrido un error!"+e.getMessage());
+        }
+    }
+
+    public static void requerimiento2(){  
+        System.out.println("*** Proyectos por Tipo ***");   
+
+        try{
+            // su codigo
+            ArrayList <Requerimiento2> proyectoTipo = controlador.requerimiento_2();
+            for(Requerimiento2 proTipo: proyectoTipo){
+                System.out.printf("El proyecto con ID %d de la constructora: %s de la ciudad %s, tiene un estrato asignado igual a %d\n",
+                proTipo.getIdProyecto(),
+                proTipo.getConstructora(),
+                proTipo.getCiudad(),
+                proTipo.getEstrato()
+                );
+            }
+
+        }catch(SQLException e){
+            System.err.println("Ha ocurrido un error! "+e.getMessage());
+        }
+    }
+
+    public static void requerimiento3(){
+        System.out.println("*** Lideres por Nombre ***");
+
+        try{
+            // su codigo
+            ArrayList<Requerimiento3> liderTipo = controlador.requerimiento_3();
+            for(Requerimiento3 liTipo : liderTipo){
+                System.out.printf("El Lider con Id %d se llama %s %s\n",
+                liTipo.getIdLider(),
+                liTipo.getNombre(),
+                liTipo.getApellido()
+                );
+            }                       
+        }catch(SQLException e){
+            System.err.println("Ha ocurrido un error! " + e);
+        }
+    }
+}
+
+/* carpeta util */
+public class JDBCUtilities {
+    //Atributos de clase para gestión de conexión con la base de datos    
+    private static final String UBICACION_BD = "ProyectosConstruccion.db";    
+
+    public static Connection getConnection() throws SQLException {
+        String url = "jdbc:sqlite:" + UBICACION_BD;        
+        return DriverManager.getConnection(url);
+    }
+
+    public static boolean estaVacia(){
+        File archivo = new File(JDBCUtilities.UBICACION_BD);
+        return archivo.length() == 0;
+    }
+    
+}
+
+/* carpeta Model */
+/* Archivos vo */
+public class Requerimiento1 {
+    private String nombre;
+    private Integer idLider;
+    private Integer salario;
+    private String primerApellido;
+
+    public Requerimiento1() {
+    }
+
+    public Requerimiento1(String nombre, Integer idLider, Integer salario, String primerApellido) {
+        this.nombre = nombre;
+        this.idLider = idLider;
+        this.salario = salario;
+        this.primerApellido = primerApellido;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Integer getIdLider() {
+        return idLider;
+    }
+
+    public void setIdLider(Integer idLider) {
+        this.idLider = idLider;
+    }
+
+    public Integer getSalario() {
+        return salario;
+    }
+
+    public void setSalario(Integer salario) {
+        this.salario = salario;
+    }
+
+    public String getPrimerApellido() {
+        return primerApellido;
+    }
+
+    public void setPrimerApellido(String primerApellido) {
+        this.primerApellido = primerApellido;
+    }    
+}
+
+public class Requerimiento2 {
+    private Integer idProyecto;
+    private String constructora;
+    private String ciudad;
+    private Integer estrato;
+    
+    public Requerimiento2() {
+    }
+
+    public Requerimiento2(Integer idProyecto, String constructora, String ciudad, Integer estrato) {
+        this.idProyecto = idProyecto;
+        this.constructora = constructora;
+        this.ciudad = ciudad;
+        this.estrato = estrato;
+    }
+
+    public Integer getIdProyecto() {
+        return idProyecto;
+    }
+
+    public void setIdProyecto(Integer idProyecto) {
+        this.idProyecto = idProyecto;
+    }
+
+    public String getConstructora() {
+        return constructora;
+    }
+
+    public void setConstructora(String constructora) {
+        this.constructora = constructora;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public Integer getEstrato() {
+        return estrato;
+    }
+
+    public void setEstrato(Integer estrato) {
+        this.estrato = estrato;
+    }
+}
+
+public class Requerimiento3 {
+    private Integer idLider;
+    private String nombre;
+    private String apellido;
+    
+    public Requerimiento3() {
+    }
+
+    public Requerimiento3(Integer idLider, String nombre, String apellido) {
+        this.idLider = idLider;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+
+    public Integer getIdLider() {
+        return idLider;
+    }
+
+    public void setIdLider(Integer idLider) {
+        this.idLider = idLider;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }   
+}
+
+/* Archivos dao */
+public class Requerimiento_1Dao {
+    public ArrayList<Requerimiento1> requerimiento1() throws SQLException {
+        ArrayList<Requerimiento1> retorno = new ArrayList<>();
+        Connection conexion = JDBCUtilities.getConnection();
+
+        try {
+            String select = "Select Id_Lider, Nombre, Primer_Apellido, Salario from Lider where salario<=500000 order by salario ";
+            PreparedStatement stm = conexion.prepareStatement(select);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                Requerimiento1 requerimiento1 = new Requerimiento1();
+                requerimiento1.setNombre(rs.getString("Nombre"));
+                requerimiento1.setPrimerApellido(rs.getString("Primer_Apellido"));
+                requerimiento1.setIdLider(rs.getInt("Id_Lider"));
+                requerimiento1.setSalario(rs.getInt("salario"));
+                retorno.add(requerimiento1);
+            }
+            rs.close();
+            stm.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }finally{
+            if(conexion!=null){
+                conexion.close();
+            }
+        }
+
+        return retorno;
+    }
+}
+
+public class Requerimiento_2Dao {
+    public ArrayList<Requerimiento2> requerimiento2() throws SQLException {
+        //su codigo
+        ArrayList<Requerimiento2> retornoConsulta = new ArrayList<>();
+        Connection conexion = JDBCUtilities.getConnection();
+        try {
+            String select ="select ID_Proyecto, Constructora, Ciudad, Estrato from Proyecto natural join Tipo where Ciudad = 'Cartagena' order by Estrato ASC ";
+            PreparedStatement stm = conexion.prepareStatement(select);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                Requerimiento2 reque2 = new Requerimiento2();
+                reque2.setIdProyecto(rs.getInt("ID_Proyecto"));
+                reque2.setConstructora(rs.getString("Constructora"));
+                reque2.setCiudad(rs.getString("Ciudad"));
+                reque2.setEstrato(rs.getInt("Estrato"));
+                retornoConsulta.add(reque2);
+            }
+            rs.close();
+            stm.close();
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.err.println(e.getMessage());
+        }finally{
+            if(conexion!=null){                
+                conexion.close();
+            }
+        }
+        return retornoConsulta;
+    }
+}
+
+public class Requerimiento_3Dao {
+   
+   public ArrayList<Requerimiento3> requerimiento3() throws SQLException {
+
+    ArrayList<Requerimiento3> retornoConsulta = new ArrayList<>();
+    Connection conexion = JDBCUtilities.getConnection();
+
+    try{       
+
+        String select =   "select ID_Lider, Nombre, Primer_Apellido from Lider where Primer_Apellido LIKE '%z' order by Nombre asc";
+
+
+        PreparedStatement stm = conexion.prepareStatement(select);
+        ResultSet rs = stm.executeQuery();
+
+        //Recorrer los registros en los VO específicos
+        while(rs.next()){
+            Requerimiento3 reque3 = new Requerimiento3();
+            reque3.setIdLider(rs.getInt("ID_Lider"));
+            reque3.setNombre(rs.getString("Nombre"));
+            reque3.setApellido(rs.getString("Primer_Apellido"));
+
+            //Se agrega cada registro como un objeto del ArrayList que contiene la consulta
+            retornoConsulta.add(reque3);
+        }
+
+        rs.close();
+        stm.close();
+
+    }catch(SQLException e){
+        System.err.println("Error consultando los proyectos de tipo Apartaestudio en Quibdo: "+e);
+    }finally{
+        if(conexion != null){
+            conexion.close();
+        }
+    }
+
+    //Retornar la colección de vo's
+    return retornoConsulta;
+    }      
+}
+
+/* Carpeta controller */
+public class ControladorRequerimientosReto4 {
+     //Su codigo
+    private final Requerimiento_1Dao CONSULTA1;
+    private final Requerimiento_2Dao CONSULTA2;
+    private final Requerimiento_3Dao CONSULTA3;
+
+    public ControladorRequerimientosReto4() {
+        this.CONSULTA1 = new Requerimiento_1Dao();
+        this.CONSULTA2 = new Requerimiento_2Dao();
+        this.CONSULTA3 = new Requerimiento_3Dao();
+    }
+
+    public ArrayList<Requerimiento1> requerimiento_1() throws SQLException {
+        //Su codigo
+        return this.CONSULTA1.requerimiento1();
+    }
+    
+    public ArrayList<Requerimiento2> requerimiento_2() throws SQLException {
+        //Su codigo
+        return this.CONSULTA2.requerimiento2();
+    }
+
+    public ArrayList<Requerimiento3> requerimiento_3() throws SQLException {
+        //Su codigo
+        return this.CONSULTA3.requerimiento3();
+    }
+}
